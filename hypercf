@@ -46,7 +46,8 @@ class Requests(object):
         pass
 
     #----------------------------------------------------------------------
-    def makeRequest(self, url, headers, requestType, streamVal='False', data=None):
+    def makeRequest(self, url, headers, requestType, streamVal='False',
+                    data=None):
         global authdata
         global dict_args
         if requestType == requests.put and data:
@@ -57,7 +58,8 @@ class Requests(object):
             dataVal = None
         while url:
             try:
-                resp = requestType(url, headers=headers, stream=streamVal, data=dataVal)
+                resp = requestType(url, headers=headers, stream=streamVal,
+                                   data=dataVal)
             except requests.exceptions.HTTPError:
                 if e.code == 401:
                     print 'Error 401, re-authenticating'
@@ -124,7 +126,9 @@ def collectContainers():
         url = (authority + '/?limit=10000&format=json')
         if lastcontainer:
             url = (url + '&marker=' + urllib2.quote(lastcontainer))
-        headers = {'X-Auth-Token': authdata['token'],  'Connection': 'Keep-Alive', 'Content-Type': 'application/json'}
+        headers = {'X-Auth-Token': authdata['token'],
+                   'Connection': 'Keep-Alive',
+                   'Content-Type': 'application/json'}
         reqObj = Requests(0)
         resp = reqObj.makeRequest(url, headers, requests.get)
         json_response = json.loads(resp.text)
@@ -160,7 +164,9 @@ def collectContainerObjects():
         url = (authority + '/' + urllib2.quote(container) + '/?limit=10000&format=json')
         if lastobject:
             url = (url + '&marker=' + urllib2.quote(lastobject))
-        headers = {'X-Auth-Token': authdata['token'],  'Connection': 'Keep-Alive', 'Content-Type': 'application/json'}
+        headers = {'X-Auth-Token': authdata['token'],
+                   'Connection': 'Keep-Alive',
+                   'Content-Type': 'application/json'}
         reqObj = Requests(container)
         resp = reqObj.makeRequest(url, headers, requests.get)
         json_response = json.loads(resp.text)
@@ -201,9 +207,10 @@ def downloadObjects(path, dlCount):
 
     path = path.decode('utf-8', 'replace')
     url = (authority + '/' + urllib2.quote(container) + '/' + path)
-    headers = {'X-Auth-Token': authdata['token'],  'Connection': 'Keep-Alive'}
+    headers = {'X-Auth-Token': authdata['token'], 'Connection': 'Keep-Alive'}
     reqObj = Requests(container)
-    resp = reqObj.makeRequest(url, headers, requests.get, streamVal=True, data=fullpath)
+    resp = reqObj.makeRequest(url, headers, requests.get, streamVal=True,
+                              data=fullpath)
 
 
 #----------------------------------------------------------------------
@@ -220,7 +227,7 @@ def deleteObjects(path, dlCount):
         print ("# Deleting: %s of %s                             \r" % (dlCount, objTotal)),
 
     url = (authority + '/' + urllib2.quote(container) + '/' + path)
-    headers = {'X-Auth-Token': authdata['token'],  'Connection': 'Keep-Alive'}
+    headers = {'X-Auth-Token': authdata['token'], 'Connection': 'Keep-Alive'}
     reqObj = Requests(container)
     resp = reqObj.makeRequest(url, headers, requests.delete)
 
@@ -235,7 +242,7 @@ def deleteContainer():
         print ("Deleting %s container" % (container))
     time.sleep(2)
     url = (authority + '/' + urllib2.quote(container))
-    headers = {'X-Auth-Token': authdata['token'],  'Connection': 'Keep-Alive'}
+    headers = {'X-Auth-Token': authdata['token'], 'Connection': 'Keep-Alive'}
     reqObj = Requests(container)
     resp = reqObj.makeRequest(url, headers, requests.delete)
 
@@ -263,9 +270,10 @@ def uploadObjects(path, progressCount):
     if urlfile.startswith('../'):
         urlfile = urlfile.strip('../')
     url = (authority + '/' + urllib2.quote(container) + '/' + urlfile)
-    headers = {'X-Auth-Token': authdata['token'],  'Connection': 'Keep-Alive'}
+    headers = {'X-Auth-Token': authdata['token'], 'Connection': 'Keep-Alive'}
     reqObj = Requests(container)
-    resp = reqObj.makeRequest(url, headers, requests.put, streamVal=True, data=path)
+    resp = reqObj.makeRequest(url, headers, requests.put, streamVal=True,
+                              data=path)
     return (url, headers, resp)
 
 #----------------------------------------------------------------------
@@ -279,7 +287,7 @@ def createContainer():
         print ("Creating %s container" % (container))
 
     url = (authority + '/' + urllib2.quote(container))
-    headers = {'X-Auth-Token': authdata['token'],  'Connection': 'Keep-Alive'}
+    headers = {'X-Auth-Token': authdata['token'], 'Connection': 'Keep-Alive'}
     reqObj = Requests(container)
     resp = reqObj.makeRequest(url, headers, requests.put)
     time.sleep(2)
@@ -300,7 +308,7 @@ def collectFileData(rootdir):
 
 #----------------------------------------------------------------------
 def humanReadSize(num):
-    for x in ['B','KB','MB','GB']:
+    for x in ['B', 'KB', 'MB', 'GB']:
         if num < 1024.0:
             return "%3.1f%s" % (num, x)
         num /= 1024.0
@@ -312,14 +320,17 @@ def collectContainerHeaders(container):
     global authdata
     global authority
     url = (authority + '/' + container)
-    headers = {'X-Auth-Token': authdata['token'],  'Connection': 'Keep-Alive', 'Content-Type': 'application/json'}
+    headers = {'X-Auth-Token': authdata['token'],
+               'Connection': 'Keep-Alive',
+               'Content-Type': 'application/json'}
     reqObj = Requests(container)
     resp = reqObj.makeRequest(url, headers, requests.head)
     contHeaderDict = resp.headers
     cCount = (int(contHeaderDict['x-container-object-count']))
     cSize = (int(contHeaderDict['x-container-bytes-used']))
     hSize = humanReadSize(cSize)
-    print_statement = ("Obj#: %-9s  Size: %9s  Name: %s" % (cCount, hSize, container))
+    print_statement = ("Obj#: %-9s  Size: %9s  Name: %s" % (
+        cCount, hSize, container))
     return print_statement
 
 
@@ -330,7 +341,9 @@ def collectObjectHeaders(obj):
     container = args.cont
     obj = obj.decode('utf-8', 'replace')
     url = (authority + '/' + container + '/' + obj)
-    headers = {'X-Auth-Token': authdata['token'],  'Connection': 'Keep-Alive', 'Content-Type': 'application/json'}
+    headers = {'X-Auth-Token': authdata['token'],
+               'Connection': 'Keep-Alive',
+               'Content-Type': 'application/json'}
     reqObj = Requests(container)
     resp = reqObj.makeRequest(url, headers, requests.head)
     HeaderDict = resp.headers
@@ -341,9 +354,9 @@ def collectObjectHeaders(obj):
     return print_statement
 
 
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#  
+#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 if __name__ == "__main__":
-    #-- For testing ranges via argparse, choices floods the screen with numbers --
+    #-- For testing ranges via argparse, choices floods the screen with numbers
     class IntRange(object):
         def __init__(self, start, stop=None):
             if stop is None:
@@ -360,7 +373,6 @@ if __name__ == "__main__":
     #----------------------------------------------------------------------
     def init_subProc():
         signal.signal(signal.SIGINT, signal.SIG_IGN)
-
 
     #----------------------------------------------------------------------
     def jobSpooler(target_def, obj_list):
@@ -388,7 +400,6 @@ if __name__ == "__main__":
             result = results.get()
             num_jobs -= 1
 
-
     #----------------------------------------------------------------------
     def mapPrintSpooler(target_object, obj_list):
         pool = multiprocessing.Pool(args.proc, init_subProc)
@@ -403,8 +414,7 @@ if __name__ == "__main__":
         pool.close()
         pool.join()
 
-
-    #------ Calculate Cpu Info ----------------------------------------------
+    #------ Calculate CPU info ----------------------------------------------
     cpu_num =  int(multiprocessing.cpu_count())
     up_dn_def = (cpu_num * 3)
     ls_del_def = (cpu_num * 15)
@@ -503,6 +513,3 @@ if __name__ == "__main__":
         if objectlist:
             jobSpooler(deleteObjects, objectlist)
         deleteContainer()
-
-
-
