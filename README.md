@@ -27,11 +27,12 @@ request
 The intended output is supposed to be very basic so that the output can be piped into other linux programs such as grep,
 while, or for loops etc...
 
+This is a fork of the original at: https://github.com/rackerroush/hypercf by Justin Roush
 
 
 
-
-List:
+List
+----
 
     Simple list of containers:
         hypercf -u username -k qwerty123456abcdefghij09876 -r ord ls
