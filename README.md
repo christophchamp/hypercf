@@ -7,9 +7,9 @@ The initial goal of this script is to speed up Cloud Files uploads and download 
 
 I recommend using Ubuntu 12.04 or higher as it has python 2.7 by default and should only need the requests module installed.
 Install the requests module by doing the following:
- pip install requests
-       or
- easy_install requests
+     pip install requests
+     # or
+     easy_install requests
 
 The following modules are imported:
 argparse,
@@ -27,8 +27,7 @@ request
 The intended output is supposed to be very basic so that the output can be piped into other linux programs such as grep,
 while, or for loops etc...
 
-This is a fork of the original at: https://github.com/rackerroush/hypercf by Justin Roush
-
+This is a fork of the original at: https://github.com/rackerroush/hypercf by Justin Roush (forked: 2013-08-26)
 
 
 List
@@ -83,8 +82,8 @@ List
         Obj#: 1000       Size:   723.2MB  Name: test2
 
 
-
-Download:
+Download
+--------
 
     Download 'test' container to /home/user/mycontainer
         hypercf -u username -k qwerty123456abcdefghij09876 -r ord dn -c test -d /home/user/mycontainer
@@ -105,10 +104,8 @@ Download:
     Note: the base directory, '/home/user/mycontainer' must already exist.
 
 
-
-
-
-Upload:
+Upload
+------
 
     Using the example/path structure above with full path:
         hypercf -u username -k qwerty123456abcdefghij09876 -r ord up -c newcontainer -d /home/user/mycontainer
@@ -141,24 +138,21 @@ Upload:
           to always be relative the the base path you use when downloading.
 
 
-
-
-Delete:
+Delete
+------
 
     Delete the newcontainer and all the files:
         hypercf -u username -k qwerty123456abcdefghij09876 -r ord del -c newcontainer
 
 
-
-
-Copy (container to container):
+Copy (container to container)
+-----------------------------
 
     Note: This feature has not yet been implemented.
 
 
-
-
-Advanced usage:
+Advanced usage
+--------------
 
     Download multiple containers to mycontainers dir (this one will d/l them all):
         hypercf -u username -k qwerty123456abcdefghij09876 -r ord ls | while read cont;do hypercf -u username -k qwerty123456abcdefghij09876 -r ord dn -c $cont -d /home/user/mycontainer;done
